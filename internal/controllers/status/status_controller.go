@@ -208,6 +208,11 @@ func (r *StatusControllerReconciler) getConditions(ra rv1alpha1.ReferenceAddon) 
 		rv1alpha1.ReferenceAddonConditionAvailable.String(),
 	)
 
+	isDegraded := meta.IsStatusConditionTrue(
+		ra.Status.Conditions,
+		rv1alpha1.ReferenceAddonConditionDegraded.String(),
+	)
+
 	// Check if Reference addon is available for the first time
 	if isAvailable {
 		r.cfg.Log.Info("Reference Addon Successfully Installed")
@@ -216,6 +221,17 @@ func (r *StatusControllerReconciler) getConditions(ra rv1alpha1.ReferenceAddon) 
 			"True",
 			av1alpha1.AddonInstanceInstalledReasonSetupComplete,
 			"All Components Available",
+		))
+	}
+
+	// Check if Reference addon is degraded
+	if isDegraded {
+		r.cfg.Log.Info("Reference Addon is in a degraded state")
+
+		conditions = append(conditions, addoninstance.NewAddonInstanceConditionDegraded(
+			"True",
+			av1alpha1.AddonInstanceConditionDegraded.String(),
+			"Components Degraded",
 		))
 	}
 

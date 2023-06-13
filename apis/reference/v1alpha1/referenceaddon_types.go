@@ -23,6 +23,7 @@ func (c ReferenceAddonCondition) String() string {
 
 const (
 	ReferenceAddonConditionAvailable ReferenceAddonCondition = "Available"
+	ReferenceAddonConditionDegraded  ReferenceAddonCondition = "Degraded"
 )
 
 type ReferenceAddonAvailableReason string
